@@ -27,7 +27,7 @@ public class HallDao extends Dao<Hall> {
     }
 
     @Override
-    public void insert(Hall entity) {
+    public int insert(Hall entity) {
         try (Connection connection = DataSource.getInstance().getConnection();
              PreparedStatement preparedStatement = createInsertStatement(connection, entity)) {
             preparedStatement.executeUpdate();
@@ -40,6 +40,7 @@ public class HallDao extends Dao<Hall> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return entity.getId();
     }
 
     @Override

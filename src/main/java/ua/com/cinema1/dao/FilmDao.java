@@ -46,7 +46,7 @@ public class FilmDao extends Dao<Film>{
     }
 
     @Override
-    public void insert(Film entity) {
+    public int insert(Film entity) {
         try (Connection connection = DataSource.getInstance().getConnection();
              PreparedStatement preparedStatement = createInsertStatement(connection, entity)) {
 
@@ -65,6 +65,7 @@ public class FilmDao extends Dao<Film>{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return entity.getId();
     }
 
     @Override

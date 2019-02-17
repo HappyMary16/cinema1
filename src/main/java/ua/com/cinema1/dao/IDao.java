@@ -37,7 +37,7 @@ public interface IDao<K, T extends Entity> {
      *
      * @param entity the value of element
      */
-    void insert(T entity);
+    int insert(T entity);
 
 
 }

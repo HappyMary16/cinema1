@@ -26,7 +26,11 @@ public class DataSource {
     private void initPoolConnections() {
         poolConnections = new ComboPooledDataSource();
         PropertyHelper propertyHelper = PropertyHelper.getInstance();
-
+//        try {
+//            Class.forName(propertyHelper.getDbDriver());
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
         try {
             poolConnections.setDriverClass(propertyHelper.getDbDriver());
             poolConnections.setJdbcUrl(propertyHelper.getJdbcURL());

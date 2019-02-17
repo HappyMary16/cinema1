@@ -35,7 +35,7 @@ public class UserDao extends Dao<User>{
         preparedStatement.setString(4, entity.getPassword());
         preparedStatement.setString(5, entity.getPhone());
         preparedStatement.setString(6, entity.getEmail());
-        preparedStatement.setInt(7, entity.getType().getId());
+        preparedStatement.setInt(7, entity.getRole().getId());
 
         return preparedStatement;
     }
@@ -50,7 +50,7 @@ public class UserDao extends Dao<User>{
         preparedStatement.setString(4, entity.getPassword());
         preparedStatement.setString(5, entity.getPhone());
         preparedStatement.setString(6, entity.getEmail());
-        preparedStatement.setInt(7, entity.getType().getId());
+        preparedStatement.setInt(7, entity.getRole().getId());
         preparedStatement.setInt(8, entity.getId());
 
         return preparedStatement;
@@ -65,11 +65,11 @@ public class UserDao extends Dao<User>{
             entity.setId(resultSet.getInt("id"));
             entity.setFirstName(resultSet.getString("first_name"));
             entity.setLastName(resultSet.getString("last_name"));
-            entity.setLogin(resultSet.getString("loin"));
+            entity.setLogin(resultSet.getString("login"));
             entity.setPassword(resultSet.getString("password"));
             entity.setPhone(resultSet.getString("phone"));
             entity.setEmail(resultSet.getString("email"));
-            entity.setType(Role.getInstance(resultSet.getInt("role_id")));
+            entity.setRole(Role.getInstance(resultSet.getInt("role_id")));
             result.add(entity);
         }
         return result;

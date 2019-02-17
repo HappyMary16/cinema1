@@ -14,6 +14,6 @@ public enum Role {
     }
 
     public static Role getInstance(int id) {
-        return Role.values()[id];
+        return Role.values()[id - 1];
     }
 }

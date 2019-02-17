@@ -13,5 +13,5 @@ public class User extends Entity {
     private String password;
     private String phone;
     private String email;
-    private Role type;
+    private Role role;
 }

@@ -55,7 +55,7 @@ public abstract class Dao <T extends Entity> implements IDao<Integer, T> {
     }
 
     @Override
-    public void insert(T entity) {
+    public int insert(T entity) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = createInsertStatement(connection, entity)) {
             preparedStatement.executeUpdate();
@@ -66,6 +66,7 @@ public abstract class Dao <T extends Entity> implements IDao<Integer, T> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return entity.getId();
     }
 
     @Override
