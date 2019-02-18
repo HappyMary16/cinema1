@@ -14,7 +14,7 @@
             var p1 = document.getElementById('passwordField');
             var p2 = document.getElementById('confirmPasswordField');
 
-            if(p1.value != p2.value) // пароли не совпали
+            if(p1.value !== p2.value) // пароли не совпали
             {
                 alert('Пароли не совпадают');
                 return false;
