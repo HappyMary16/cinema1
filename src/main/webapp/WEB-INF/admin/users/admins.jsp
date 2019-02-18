@@ -97,11 +97,11 @@
     <table>
         <th>
             <form action="/admin/admins/new">
-                <button type="submit">Новый администратор</button>
+                <button type="submit">New admin</button>
             </form>
         </th>
         <tr>
-            <th class="title">ID</th>
+            <th class="title">№</th>
             <th class="title">First name</th>
             <th class="title">Last name</th>
             <th class="title">Login</th>
@@ -127,6 +127,7 @@
             </td>
             <td class="text"><a href="/admin/admin?id=<%= user.getId() %>"><%= user.getEmail() %></a>
             </td>
+            <td class="list"><a href="/admin/admins/delete?id=<%= user.getId()%>">Delete</a></td>
         </tr>
         <%
             }

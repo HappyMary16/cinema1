@@ -1,17 +1,28 @@
-<%@ page import="ua.com.cinema1.dao.UserDao" %>
-<%@ page import="ua.com.cinema1.model.User" %>
 <%--
   Created by IntelliJ IDEA.
-  User: Mimino
-  Date: 04.11.2017
-  Time: 18:24
+  User: Dell
+  Date: 16.02.2019
+  Time: 12:24
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Администратор</title>
+    <script type="text/javascript">
+        function checkForm()
+        {
+            var p1 = document.getElementById('passwordField');
+            var p2 = document.getElementById('confirmPasswordField');
+
+            if(p1.value !== p2.value) // пароли не совпали
+            {
+                alert('Пароли не совпадают');
+                return false;
+            }
+            return true;
+        }
+    </script>
+    <title>Administration</title>
     <style>
         #navbar {
             margin: 0;
@@ -31,8 +42,15 @@
             padding: 5px;
             text-decoration: none;
             font-weight: bold;
-            border-left: 5px solid #33ADFF;
             display: block;
+        }
+
+        #sidebar {
+            width: 200px;
+            background: #ffffff;
+            border-right: 1px solid #231F20;
+            top: 0px; /* Расстояние от верхнего края */
+            bottom: 0; /* Расстояние снизу  */
         }
 
         body {
@@ -48,14 +66,6 @@
             padding: 10px;
         }
 
-        #sidebar {
-            width: 200px;
-            background: #ECF5E4;
-            border-right: 1px solid #231F20;
-            top: 0px; /* Расстояние от верхнего края */
-            bottom: 0; /* Расстояние снизу  */
-        }
-
         #content {
             top: 0px; /* Расстояние от верхнего края */
             left: 220px; /* Расстояние от левого края */
@@ -63,7 +73,7 @@
             right: 0;
         }
 
-        #firstNameField, #lastNameField, #loginField, #passwordField, #confirmPasswordField, #phoneField, #idField {
+        #firstNameField, #lastNameField, #emailField, #loginField, #passwordField, #confirmPasswordField, #phoneField {
             width: 300px; /* Ширина поля */
             padding: 10px; /* Поля */
             box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2); /* Тень внутри */
@@ -80,6 +90,9 @@
             line-height: 30px; /* Выравниваем по высоте */
         }
 
+        .submitField {
+            margin-left: 425px; /* Сдвигаем вправо под поля */
+        }
     </style>
 </head>
 
@@ -95,23 +108,21 @@
     </ul>
 </div>
 <div id="content">
-    <%
-        UserDao userService = UserDao.getInstance();
-        User userDTO = userService.getById(Integer.parseInt(request.getParameter("id")));
-    %>
-    <p><label for="idField">ID:</label><input type="text" name="ID" id="idField" value="<%=userDTO.getId()%>" readonly>
-    </p>
-    <p><label for="firstNameField">Имя:</label><input type="text" name="firstName" id="firstNameField"
-                                                      value="<%=userDTO.getFirstName()%>" readonly></p>
-    <p><label for="lastNameField">Фамилия:</label><input type="text" name="lastName" id="lastNameField"
-                                                         value="<%=userDTO.getLastName()%>" readonly></p>
-    <p><label for="phoneField">Телефон:</label><input type="tel" name="phone" id="phoneField"
-                                                      value="<%=userDTO.getPhone()%>" readonly></p>
-    <p><label for="loginField">Email:</label><input type="email" name="email" id="loginField"
-                                                    value="<%=userDTO.getEmail()%>" readonly></p>
-    <p><label for="passwordField">Пароль:</label><input type="password" name="password" id="passwordField"
-                                                        value="<%=userDTO.getPassword()%>" readonly></p>
-</div>
+    <h3>Додавання нового адміністратора:</h3><br>
+    <form action="/admin/add_user" method="post" onsubmit="return checkForm();">
+        <p><label for="firstNameField">Имя:</label><input type="text" name="firstName" id="firstNameField" required></p>
+        <p><label for="lastNameField">Фамилия:</label><input type="text" name="lastName" id="lastNameField" required>
+        </p>
+        <p><label for="loginField">Логін:</label><input type="login" name="login" id="loginField" required></p>
+        <p><label for="phoneField">Телефон:</label><input type="tel" name="phone" id="phoneField"></p>
+        <p><label for="emailField">Email:</label><input type="email" name="email" id="emailField" required></p>
+        <p><label for="passwordField">Пароль:</label><input type="password" name="password" id="passwordField" required>
+        </p>
+        <p><label for="confirmPasswordField">Подтверждение пароля:</label><input type="password" name="confirmPassword"
+                                                                                 id="confirmPasswordField" required></p>
+        <p><input type="submit" value="Сохранить" class="submitField"></p>
 
+    </form>
+</div>
 </body>
 </html>
