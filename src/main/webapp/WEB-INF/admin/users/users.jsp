@@ -1,5 +1,4 @@
 <%@ page import="ua.com.cinema1.model.User" %>
-<%@ page import="ua.com.cinema1.service.AdminService" %>
 <%@ page import="ua.com.cinema1.service.UserService" %><%--
   Created by IntelliJ IDEA.
   User: Dell

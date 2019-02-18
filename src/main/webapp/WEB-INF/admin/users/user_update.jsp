@@ -9,6 +9,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <script type="text/javascript">
+        function checkForm()
+        {
+            var p1 = document.getElementById('passwordField');
+            var p2 = document.getElementById('confirmPasswordField');
+
+            if(p1.value != p2.value) // пароли не совпали
+            {
+                alert('Пароли не совпадают');
+                return false;
+            }
+            return true;
+        }
+    </script>
     <title>Администратор</title>
     <style>
         #navbar {
