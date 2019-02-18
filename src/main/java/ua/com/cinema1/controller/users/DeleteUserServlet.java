@@ -1,4 +1,6 @@
-package ua.com.cinema1.controller;
+package ua.com.cinema1.controller.users;
+
+import ua.com.cinema1.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -7,27 +9,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "AdminServlet", urlPatterns = {"/admin/admins", "/admin/users", "/admin/halls", "/admin/seances", "/admin"})
-public class AdminServlet  extends HttpServlet {
-
+@WebServlet(name = "DeleteUserServlet", urlPatterns = {"/admin/admins/delete", "/admin/users/delete"})
+public class DeleteUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        UserService.getInstance().delete(Integer.valueOf(request.getParameter("id")));
 
-        String userPath = request.getServletPath();
-
-        switch (userPath) {
-            case "/admin":
-                request.getRequestDispatcher("/WEB-INF/admin/admin.jsp").forward(request, response);
-                break;
-            case "/admin/admins":
+        switch (request.getServletPath()) {
+            case "/admin/admins/delete":
                 request.getRequestDispatcher("/WEB-INF/admin/users/admins.jsp").forward(request, response);
-            case "/admin/users":
+            case "/admin/users/delete":
                 request.getRequestDispatcher("/WEB-INF/admin/users/users.jsp").forward(request, response);
-
         }
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
 }
+

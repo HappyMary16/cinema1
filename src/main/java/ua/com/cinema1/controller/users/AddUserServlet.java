@@ -1,4 +1,4 @@
-package ua.com.cinema1.controller;
+package ua.com.cinema1.controller.users;
 
 import ua.com.cinema1.dao.UserDao;
 import ua.com.cinema1.model.Role;

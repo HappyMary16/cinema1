@@ -1,13 +1,11 @@
 <%@ page import="ua.com.cinema1.dao.UserDao" %>
-<%@ page import="ua.com.cinema1.model.User" %>
-<%--
+<%@ page import="ua.com.cinema1.model.User" %><%--
   Created by IntelliJ IDEA.
-  User: Mimino
-  Date: 04.11.2017
-  Time: 18:24
+  User: Dell
+  Date: 17.02.2019
+  Time: 22:16
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -95,22 +93,28 @@
     </ul>
 </div>
 <div id="content">
-    <%
-        UserDao userService = UserDao.getInstance();
-        User userDTO = userService.getById(Integer.parseInt(request.getParameter("id")));
-    %>
-    <p><label for="idField">ID:</label><input type="text" name="ID" id="idField" value="<%=userDTO.getId()%>" readonly>
-    </p>
-    <p><label for="firstNameField">Имя:</label><input type="text" name="firstName" id="firstNameField"
-                                                      value="<%=userDTO.getFirstName()%>" readonly></p>
-    <p><label for="lastNameField">Фамилия:</label><input type="text" name="lastName" id="lastNameField"
-                                                         value="<%=userDTO.getLastName()%>" readonly></p>
-    <p><label for="phoneField">Телефон:</label><input type="tel" name="phone" id="phoneField"
-                                                      value="<%=userDTO.getPhone()%>" readonly></p>
-    <p><label for="loginField">Email:</label><input type="email" name="email" id="loginField"
-                                                    value="<%=userDTO.getEmail()%>" readonly></p>
-    <p><label for="passwordField">Пароль:</label><input type="password" name="password" id="passwordField"
-                                                        value="<%=userDTO.getPassword()%>" readonly></p>
+    <form action="/admin/user_update" method="post" onsubmit="return checkForm();">
+        <%
+            UserDao userService = UserDao.getInstance();
+            User userDTO = userService.getById(Integer.parseInt(request.getParameter("id")));
+        %>
+        <p><label for="id">ID:</label><input type="text" name="id" id="id" value="<%=userDTO.getId()%>"
+                                                  readonly>
+        </p>
+        <p><label for="firstNameField">Имя:</label><input type="text" name="firstName" id="firstNameField"
+                                                          value="<%=userDTO.getFirstName()%>" required></p>
+        <p><label for="lastNameField">Фамилия:</label><input type="text" name="lastName" id="lastNameField"
+                                                             value="<%=userDTO.getLastName()%>" required></p>
+        <p><label for="phoneField">Телефон:</label><input type="tel" name="phone" id="phoneField"
+                                                          value="<%=userDTO.getPhone()%>" required></p>
+        <p><label for="loginField">Email:</label><input type="email" name="email" id="loginField"
+                                                        value="<%=userDTO.getEmail()%>" required></p>
+        <p><label for="passwordField">Пароль:</label><input type="password" name="password" id="passwordField"
+                                                            value="<%=userDTO.getPassword()%>" required></p>
+        <p><label for="confirmPasswordField">Подтверждение пароля:</label><input type="password" name="confirmPassword"
+                                                                                 id="confirmPasswordField" value="<%=userDTO.getPassword()%>" required></p>
+        <button type="submit">Submit</button>
+    </form>
 </div>
 
 </body>
