@@ -3,6 +3,8 @@ package ua.com.cinema1.dao;
 import ua.com.cinema1.model.Seance;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -65,9 +67,16 @@ public class SeanceDao extends Dao<Seance> {
         while (resultSet.next()) {
             Seance entity = new Seance();
             entity.setId(resultSet.getInt("id"));
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-DD");
 
-            Date date = new Date(String.valueOf(resultSet
-                    .getDate("seance_date")));
+            Date date = null;
+            try {
+                date = dateFormat.parse(resultSet
+                        .getDate("seance_date").toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            System.out.println(date);
             date.setTime(resultSet.getLong("seance_time"));
             entity.setDateAdnTime(date);
 

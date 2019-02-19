@@ -20,8 +20,12 @@ public class AdminServlet  extends HttpServlet {
                 break;
             case "/admin/admins":
                 request.getRequestDispatcher("/WEB-INF/admin/users/admins.jsp").forward(request, response);
+                break;
             case "/admin/users":
                 request.getRequestDispatcher("/WEB-INF/admin/users/users.jsp").forward(request, response);
+                break;
+            case "/admin/seances":
+                request.getRequestDispatcher("/WEB-INF/admin/seances/seances.jsp").forward(request, response);
 
         }
 
