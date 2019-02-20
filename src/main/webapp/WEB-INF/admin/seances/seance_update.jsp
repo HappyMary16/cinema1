@@ -1,16 +1,34 @@
-<%@ page import="ua.com.cinema1.dao.UserDao" %>
-<%@ page import="ua.com.cinema1.model.User" %>
+<%@ page import="ua.com.cinema1.dao.FilmDao" %>
+<%@ page import="ua.com.cinema1.dao.HallDao" %>
+<%@ page import="ua.com.cinema1.dao.SeanceDao" %>
+<%@ page import="ua.com.cinema1.model.Film" %>
+<%@ page import="ua.com.cinema1.model.Hall" %>
+<%@ page import="ua.com.cinema1.model.Seance" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%--
   Created by IntelliJ IDEA.
-  User: Mimino
-  Date: 04.11.2017
-  Time: 18:24
+  User: Dell
+  Date: 17.02.2019
+  Time: 22:16
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <script type="text/javascript">
+        function checkForm()
+        {
+            var p1 = document.getElementById('passwordField');
+            var p2 = document.getElementById('confirmPasswordField');
+
+            if(p1.value !== p2.value) // пароли не совпали
+            {
+                alert('Пароли не совпадают');
+                return false;
+            }
+            return true;
+        }
+    </script>
     <title>Администратор</title>
     <style>
         #navbar {
@@ -95,22 +113,48 @@
     </ul>
 </div>
 <div id="content">
-    <%
-        UserDao userService = UserDao.getInstance();
-        User userDTO = userService.getById(Integer.parseInt(request.getParameter("id")));
-    %>
-    <p><label for="idField">ID:</label><input type="text" name="ID" id="idField" value="<%=userDTO.getId()%>" readonly>
-    </p>
-    <p><label for="firstNameField">Имя:</label><input type="text" name="firstName" id="firstNameField"
-                                                      value="<%=userDTO.getFirstName()%>" readonly></p>
-    <p><label for="lastNameField">Фамилия:</label><input type="text" name="lastName" id="lastNameField"
-                                                         value="<%=userDTO.getLastName()%>" readonly></p>
-    <p><label for="phoneField">Телефон:</label><input type="tel" name="phone" id="phoneField"
-                                                      value="<%=userDTO.getPhone()%>" readonly></p>
-    <p><label for="loginField">Email:</label><input type="email" name="email" id="loginField"
-                                                    value="<%=userDTO.getEmail()%>" readonly></p>
-    <p><label for="passwordField">Пароль:</label><input type="password" name="password" id="passwordField"
-                                                        value="<%=userDTO.getPassword()%>" readonly></p>
+    <form action="/admin/seance_update" method="post" onsubmit="return checkForm();">
+        <%
+            SeanceDao seanceService = SeanceDao.getInstance();
+            Seance seance = seanceService.getById(Integer.parseInt(request.getParameter("id")));
+        %>
+        <p><label for="id">ID:</label><input type="number" name="id" id="id" value="<%=seance.getId()%>" readonly>
+        </p>
+        <label for="film">Film:</label><p><select name="film" id="film">
+        <option value="<%=seance.getFilm().getId()%>"><%=seance.getFilm().getTitle()%>
+        </option>
+        <%
+            for (Film film :
+                    FilmDao.getInstance().getAll()) {
+        %>
+        <option value="<%=film.getId()%>"><%=film.getTitle()%>
+        </option>
+        <%
+            }
+        %>
+    </select></p>
+        <p><label for="date">Date:</label><input type="date" name="date" id="date"
+                                                 value="<%=new SimpleDateFormat("yyyy-MM-dd").format((seance.getDateAdnTime()))%>" required></p>
+        <p><label for="time">Time:</label><input type="time" name="time" id="time"
+                                                 value="<%=new SimpleDateFormat("HH:mm").format((seance.getDateAdnTime()))%>" required></p>
+        <label for="hall">Hall:</label><p><select name="hall" id="hall">
+        <option value="<%=seance.getHall().getId()%>"><%=seance.getHall().getName()%>
+        </option>
+        <%
+            for (Hall hall :
+                    HallDao.getInstance().getAll()) {
+        %>
+        <option value="<%=hall.getId()%>"><%=hall.getName()%>
+        </option>
+        <%
+            }
+        %>
+    </select></p>
+        <p><label for="price">Price:</label><input type="number" name="price" id="price"
+                                                   value="<%=seance.getPriceTicket()%>" required></p>
+
+        <p><input type="submit" value="Save" class="submitField"></p>
+    </form>
 </div>
 
 </body>
