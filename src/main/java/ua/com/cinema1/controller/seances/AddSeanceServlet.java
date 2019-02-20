@@ -27,7 +27,7 @@ public class AddSeanceServlet extends HttpServlet {
         Date date = null;
         try {
             date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("date"));
-            date.setTime(new SimpleDateFormat("HH:mm").parse(request.getParameter("time")).getTime());
+            date.setTime(new SimpleDateFormat("HH:mm").parse(request.getParameter("time")).getTime() + date.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }

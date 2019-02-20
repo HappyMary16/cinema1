@@ -76,7 +76,6 @@ public class SeanceDao extends Dao<Seance> {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            System.out.println(date);
             date.setTime(resultSet.getLong("seance_time"));
             entity.setDateAdnTime(date);
 
