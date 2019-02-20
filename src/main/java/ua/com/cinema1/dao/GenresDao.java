@@ -56,7 +56,6 @@ public class GenresDao implements IGenreDao {
                 result.add(Genre.getById(resultSet.getInt("genre_id")));
             }
 
-            result.forEach(e -> System.out.println(e));
         } catch (SQLException e) {
             e.printStackTrace();
         }
