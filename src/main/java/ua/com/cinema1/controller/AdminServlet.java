@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "AdminServlet", urlPatterns = {"/admin/admins", "/admin/users", "/admin/halls", "/admin/seances", "/admin"})
+@WebServlet(name = "AdminServlet", urlPatterns = {"/admin/admins", "/admin/users", "/admin/films", "/admin/seances", "/admin"})
 public class AdminServlet  extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -26,6 +26,8 @@ public class AdminServlet  extends HttpServlet {
                 break;
             case "/admin/seances":
                 request.getRequestDispatcher("/WEB-INF/admin/seances/seances.jsp").forward(request, response);
+            case "/admin/films":
+                request.getRequestDispatcher("/WEB-INF/admin/films/films.jsp").forward(request, response);
 
         }
 

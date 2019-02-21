@@ -35,7 +35,7 @@ public class FilmDao extends Dao<Film>{
         preparedStatement.setString(2, entity.getDescribe());
         preparedStatement.setInt(3, entity.getMinAge());
         preparedStatement.setLong(4, entity.getDuration());
-        preparedStatement.setString(5, entity.getLanguage());
+        //preparedStatement.setString(5, entity.getLanguage());
         preparedStatement.setDate(6, new Date(entity.getFirstSeance().getTime()));
         preparedStatement.setDate(7, new Date(entity.getLastSeance().getTime()));
         preparedStatement.setString(8, entity.getSmallPoster().toString());
@@ -76,7 +76,7 @@ public class FilmDao extends Dao<Film>{
         preparedStatement.setString(2, entity.getDescribe());
         preparedStatement.setInt(3, entity.getMinAge());
         preparedStatement.setLong(4, entity.getDuration());
-        preparedStatement.setString(5, entity.getLanguage());
+        preparedStatement.setString(5, entity.getLanguage().getLanguage());
         preparedStatement.setDate(6, new Date(entity.getFirstSeance().getTime()));
         preparedStatement.setDate(7, new Date(entity.getLastSeance().getTime()));
         preparedStatement.setString(8, entity.getSmallPoster().toString());
@@ -105,7 +105,7 @@ public class FilmDao extends Dao<Film>{
             film.setDescribe(resultSet.getString("description"));
             film.setMinAge(resultSet.getInt("min_age"));
             film.setDuration(resultSet.getInt("duration"));
-            film.setLanguage(resultSet.getString("film_language"));
+            //film.setLanguage(resultSet.getString("film_language"));
             film.setFirstSeance(resultSet.getDate("first_seance"));
             film.setLastSeance(resultSet.getDate("last_seance"));
             film.setBigPoster(new File(resultSet.getString("big_poster")));

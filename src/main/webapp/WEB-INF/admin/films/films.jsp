@@ -97,7 +97,7 @@
 <div id="content">
     <table>
         <th>
-            <form action="/admin/seances/new">
+            <form action="/admin/films/new">
                 <button type="submit">New seance</button>
             </form>
         </th>

@@ -1,6 +1,8 @@
 package ua.com.cinema1.controller.films;
 
+import ua.com.cinema1.dao.DaoFactory;
 import ua.com.cinema1.dao.FilmDao;
+import ua.com.cinema1.dao.LanguagesDao;
 import ua.com.cinema1.model.Film;
 
 import javax.servlet.ServletException;
@@ -8,29 +10,45 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-@WebServlet(name = "UpdateFilmServlet", urlPatterns = {"/admin/seance_update"})
+@WebServlet(name = "UpdateFilmServlet", urlPatterns = {"/admin/film_update"})
 public class UpdateFilmServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        FilmDao filmDao = FilmDao.getInstance();
+        FilmDao filmDao = (FilmDao) DaoFactory.getInstance().getFilmDao();
+        LanguagesDao languagesDao = (LanguagesDao) DaoFactory.getInstance().getLanguageDao();
         request.setCharacterEncoding("UTF-8");
 
         Film film = filmDao.getById(Integer.valueOf(request.getParameter("id")));
         film.setTitle(request.getParameter("title"));
         film.setDescribe(request.getParameter("description"));
-        film.setMinAge(Integer.valueOf(request.getParameter("age")));
-        film.setMinAge(Integer.valueOf(request.getParameter("age")));
+        film.setMinAge(Integer.valueOf(request.getParameter("minAge")));
         film.setDuration(Integer.parseInt(request.getParameter("duration")));
-//        film.setLanguage();
-//        film.setFirstSeance();
-//        film.setLastSeance();
-//        film.setSmallPoster();
-//        film.setBigPoster();
-//        film.setTrailerLink();
+        film.setLanguage(languagesDao.getById(Integer.valueOf(request.getParameter("language"))));
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("firstSeance"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        film.setFirstSeance(date);
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("lastSeance"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        film.setLastSeance(date);
+        film.setSmallPoster(new File(request.getParameter("smallPoster")));
+        film.setBigPoster(new File(request.getParameter("bigPoster")));
+        film.setTrailerLink(request.getParameter("trailer"));
 
-        response.sendRedirect("/admin/seance?id=" + film.getId());
+        filmDao.update(film);
+        response.sendRedirect("/admin/film?id=" + film.getId());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
