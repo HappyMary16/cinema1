@@ -26,6 +26,7 @@ public class Film extends Entity {
     private File smallPoster;
     private File bigPoster;
     private String trailerLink;
+    private int year;
 
 }
 

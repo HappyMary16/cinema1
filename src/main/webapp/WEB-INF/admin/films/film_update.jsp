@@ -2,6 +2,7 @@
 <%@ page import="ua.com.cinema1.dao.LanguagesDao" %>
 <%@ page import="ua.com.cinema1.model.Film" %>
 <%@ page import="ua.com.cinema1.model.Language" %>
+<%@ page import="ua.com.cinema1.service.FilmService" %>
 <%--
   Created by IntelliJ IDEA.
   User: Dell
@@ -26,7 +27,7 @@
             return true;
         }
     </script>
-    <title>Администратор</title>
+    <title>Update film</title>
     <style>
         #navbar {
             margin: 0;
@@ -113,8 +114,8 @@
     <h3>Add new film:</h3><br>
     <form action="/admin/film_apdate" method="post">
         <%
-            FilmDao filmDao = FilmDao.getInstance();
-            Film film = filmDao.getById(Integer.parseInt(request.getParameter("id")));
+            FilmService filmService = FilmService.getInstance();
+            Film film = filmService.getById(Integer.parseInt(request.getParameter("id")));
         %>
         <p><label for="title">Title:</label><input type="text" name="title" value="<%=film.getTitle()%>" id="title" required></p>
         <p><label for="description">Description:</label><input type="text" name="description" value="<%=film.getDescribe()%>" id="description" required>

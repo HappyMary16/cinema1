@@ -1,9 +1,8 @@
 package ua.com.cinema1.controller.films;
 
 import ua.com.cinema1.dao.DaoFactory;
-import ua.com.cinema1.dao.FilmDao;
-import ua.com.cinema1.dao.LanguagesDao;
 import ua.com.cinema1.model.Film;
+import ua.com.cinema1.service.FilmService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,16 +19,19 @@ import java.util.Date;
 public class UpdateFilmServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        FilmDao filmDao = (FilmDao) DaoFactory.getInstance().getFilmDao();
-        LanguagesDao languagesDao = (LanguagesDao) DaoFactory.getInstance().getLanguageDao();
+        FilmService filmService = FilmService.getInstance();
         request.setCharacterEncoding("UTF-8");
+        Film film = filmService.getById(Integer.valueOf(request.getParameter("id")));
 
-        Film film = filmDao.getById(Integer.valueOf(request.getParameter("id")));
         film.setTitle(request.getParameter("title"));
         film.setDescribe(request.getParameter("description"));
         film.setMinAge(Integer.valueOf(request.getParameter("minAge")));
         film.setDuration(Integer.parseInt(request.getParameter("duration")));
-        film.setLanguage(languagesDao.getById(Integer.valueOf(request.getParameter("language"))));
+        film.setLanguage(DaoFactory
+                .getInstance()
+                .getLanguageDao()
+                .getById(Integer.valueOf(request.getParameter("language"))));
+
         Date date = null;
         try {
             date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("firstSeance"));
@@ -43,11 +45,12 @@ public class UpdateFilmServlet extends HttpServlet {
             e.printStackTrace();
         }
         film.setLastSeance(date);
+
         film.setSmallPoster(new File(request.getParameter("smallPoster")));
         film.setBigPoster(new File(request.getParameter("bigPoster")));
         film.setTrailerLink(request.getParameter("trailer"));
 
-        filmDao.update(film);
+        filmService.update(film);
         response.sendRedirect("/admin/film?id=" + film.getId());
     }
 

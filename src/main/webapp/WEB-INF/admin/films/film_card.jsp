@@ -1,18 +1,16 @@
-<%@ page import="ua.com.cinema1.dao.FilmDao" %>
-<%@ page import="ua.com.cinema1.dao.LanguagesDao" %>
-<%@ page import="ua.com.cinema1.model.Film" %>
-<%@ page import="ua.com.cinema1.model.Language" %>
+<%@ page import="ua.com.cinema1.model.*" %>
+<%@ page import="ua.com.cinema1.service.FilmService" %>
 <%--
   Created by IntelliJ IDEA.
-  User: Mimino
-  Date: 04.11.2017
+  User: Dell
+  Date: 21.02.2019
   Time: 18:24
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Администратор</title>
+    <title>Film</title>
     <style>
         #navbar {
             margin: 0;
@@ -42,9 +40,6 @@
 
         #sidebar, #content {
             position: absolute;
-        }
-
-        #sidebar, #content {
             overflow: auto;
             padding: 10px;
         }
@@ -64,9 +59,8 @@
             right: 0;
         }
 
-        #firstNameField, #lastNameField, #loginField, #passwordField, #confirmPasswordField, #phoneField, #idField {
+        input {
             width: 300px; /* Ширина поля */
-            padding: 10px; /* Поля */
             box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2); /* Тень внутри */
             border: 1px solid #ccc; /* Параметры рамки */
             color: black; /* Цвет текста */
@@ -81,10 +75,15 @@
             line-height: 30px; /* Выравниваем по высоте */
         }
 
+        textarea {
+            width: 200px;
+        }
+
     </style>
 </head>
 
 <body>
+
 <div id=sidebar>
     <ul id="navbar">
         <li><a href="/admin/users">Пользователи</a></li>
@@ -95,48 +94,74 @@
         <li><a href="/">Просмотр кинотеатра</a></li>
     </ul>
 </div>
+
 <div id="content">
     <%
-        FilmDao filmDao = FilmDao.getInstance();
+        FilmService filmDao = FilmService.getInstance();
         Film film = filmDao.getById(Integer.parseInt(request.getParameter("id")));
     %>
-    <p><label for="title">Title:</label><input type="text" name="title" value="<%=film.getTitle()%>" id="title" readonly></p>
-    <p><label for="description">Description:</label><input type="text" name="description" value="<%=film.getDescribe()%>" id="description" readonly>
-    </p>
-    <p><label for="minAge">Min age:</label><input type="number" name="minAge" value="<%=film.getMinAge()%>" id="minAge" readonly></p>
-    <p><label for="duration">Duration:</label><input type="number" name="duration" value="<%=film.getDuration()%>" id="duration" readonly></p>
-    <%--<p>--%>
-    <%--<form action="/admin/add_language" method="post">--%>
-    <%--<p><label for="languageAdd">Language:</label><input type="text" name="languageAdd" id="languageAdd" required>--%>
-    <%--</p>--%>
-    <%--<p><input type="submit" value="Add language" class="submitField"></p>--%>
-    <%--</form>--%>
-    <%--</p>--%>
-    <p><label for="language">Language:</label>
-        <select name="language" id="language">
-            <option value="<%=film.getLanguage().getLanguage()%>"></option>
-            <%
-                for (Language language :
-                        LanguagesDao.getInstance().getAll()) {
-            %>
-            <option value="<%=language.getId()%>"><%=language.getLanguage()%>
-            </option>
-            <%
-                }
-            %>
-        </select></p>
-    <p><label for="firstSeance">First seance:</label><input type="date" name="firstSeance" value="<%=film.getFirstSeance()%>" id="firstSeance" readonly>
-    </p>
-    <p><label for="lastSeance">Last seance:</label><input type="date" name="lastSeance" value="<%=film.getLastSeance()%>" id="lastSeance" readonly>
-    </p>
-    <p><label for="smallPoster">Small poster (link):</label><input type="text" name="smallPoster" value="<%=film.getSmallPoster()%>" id="smallPoster"
-                                                                   readonly></p>
-    <p><label for="bigPoster">Big poster (link):</label><input type="text" name="bigPoster" value="<%=film.getBigPoster()%>" id="bigPoster" readonly></p>
-    <p><label for="trailer">Trailer (link):</label><input type="text" name="trailer" value="<%=film.getTrailerLink()%>" id="trailer" readonly></p>
+    <p><label for="title"> Title: </label>
+        <input type="text" name="title" value="<%=film.getTitle()%>" id="title" readonly></p>
+    <p><label for="year"> Year: </label>
+        <input type="number" name="year" id="year" value="<%=film.getYear()%>" readonly></p>
+    <p><label for="description"> Description: </label>
+        <input type="text" name="description" id="description" value="<%=film.getDescribe()%>" readonly></p>
+    <p><label for="minAge"> Min age: </label>
+        <input type="number" name="minAge" id="minAge" value="<%=film.getMinAge()%>" readonly></p>
+    <p><label for="duration"> Duration: </label>
+        <input type="number" name="duration" id="duration" value="<%=film.getDuration()%>" readonly></p>
+    <p><label for="language"> Language: </label>
+        <input type="text" name="language" id="language" value="<%=film.getLanguage().getLanguage()%>" readonly></p>
+    <%
+        StringBuilder genres = new StringBuilder();
+        film.getGenres().forEach(e -> genres.append(e).append(", "));
+        genres.delete(genres.length() - 2, genres.length());
+    %>
+    <p><label for="genres"> Genres: </label>
+        <textarea name="genres" id="genres" readonly><%=genres.toString().toLowerCase()%> </textarea></p>
+    <%
+        StringBuilder studios = new StringBuilder();
+        film.getStudios().forEach(e -> studios.append(e).append(", "));
+        studios.delete(studios.length() - 2, studios.length());
+    %>
+    <p><label for="studios"> Studios: </label>
+        <textarea name="studios" id="studios" readonly><%=studios.toString()%> </textarea></p>
+    <%
+        StringBuilder countries = new StringBuilder();
+        film.getCountries().forEach(e -> countries.append(e).append(", "));
+        countries.delete(countries.length() - 2, countries.length());
+    %>
+    <p><label for="countries"> Countries: </label>
+        <textarea name="countries" id="countries" readonly><%=countries.toString()%> </textarea></p>
+
+    <%
+        StringBuilder directors = new StringBuilder();
+        film.getDirectors().forEach(e -> directors.append(e).append(", "));
+        directors.delete(directors.length() - 2, directors.length());
+    %>
+    <p><label for="directors"> Directors: </label>
+        <textarea name="directors" id="directors" readonly><%=directors.toString()%> </textarea></p>
+    <%
+        StringBuilder actors = new StringBuilder();
+        film.getActors().forEach(e -> actors.append(e).append(", "));
+        actors.delete(actors.length() - 2, actors.length());
+    %>
+    <p><label for="actors"> Actors: </label>
+        <textarea name="actors" id="actors" readonly><%=actors.toString()%> </textarea></p>
+    <p><label for="firstSeance"> First seance: </label>
+        <input type="date" name="firstSeance" id="firstSeance" value="<%=film.getFirstSeance()%>" readonly></p>
+    <p><label for="lastSeance"> Last seance: </label>
+        <input type="date" name="lastSeance" id="lastSeance" value="<%=film.getLastSeance()%>" readonly></p>
+    <p><label for="smallPoster"> Small poster (link): </label>
+        <input type="text" name="smallPoster" id="smallPoster" value="<%=film.getSmallPoster()%>" readonly></p>
+    <p><label for="bigPoster"> Big poster (link): </label>
+        <input type="text" name="bigPoster" id="bigPoster" value="<%=film.getBigPoster()%>" readonly></p>
+    <p><label for="trailer"> Trailer (link): </label>
+        <input type="text" name="trailer" id="trailer" value="<%=film.getTrailerLink()%>" readonly></p>
+
     <form action="/admin/seance/update?id=<%=film.getId()%>" method="post">
-        <button type="submit">Update</button>
+        <button type="submit"> Update</button>
     </form>
 </div>
-
 </body>
 </html>

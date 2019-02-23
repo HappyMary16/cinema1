@@ -28,7 +28,7 @@ public class SeanceService implements IServise<Integer, Seance> {
     }
 
     @Override
-    public Seance read(Integer key) {
+    public Seance getById(Integer key) {
         return dao.getById(key);
     }
 
