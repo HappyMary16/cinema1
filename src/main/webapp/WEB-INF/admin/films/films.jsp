@@ -9,6 +9,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+
+<head>
+    <title>Films</title>
+</head>
+
 <style>
     #navbar {
         margin: 0;
@@ -82,6 +87,7 @@
 </style>
 
 <body>
+
 <div id=sidebar>
     <ul id="navbar">
         <li><a href="/admin/users">Пользователи</a></li>
@@ -92,7 +98,6 @@
         <li><a href="/">Просмотр кинотеатра</a></li>
     </ul>
 </div>
-
 
 <div id="content">
     <table>
@@ -135,5 +140,6 @@
         %>
     </table>
 </div>
+
 </body>
 </html>
