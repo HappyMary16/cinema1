@@ -5,7 +5,6 @@
 <%@ page import="ua.com.cinema1.model.Studio" %>
 <%@ page import="ua.com.cinema1.model.Actor" %>
 <%@ page import="ua.com.cinema1.model.Director" %>
-<%@ page import="java.util.Date" %>
 <%@ page import="ua.com.cinema1.dao.StudioDao" %>
 <%@ page import="ua.com.cinema1.dao.CountryDao" %>
 <%@ page import="ua.com.cinema1.dao.DirectorDao" %>
@@ -27,20 +26,35 @@
 <script type="text/javascript">
     function addValue(inp, sel) {
 
-        const inpVal = document.getElementById(inp);
-        const selVal = document.getElementById(sel);
+        const input = document.getElementById(inp);
+        const selVal = document.getElementById(sel).value;
 
-        if (~inpVal.value.indexOf(selVal.value)) {
+        if (~input.value.indexOf(selVal)) {
             return;
         }
 
-        if (!inpVal.value) {
-            inpVal.value = selVal.value;
-        } else {
-            inpVal.value += ", " + selVal.value;
+        if (input.value) {
+            input.value += ", ";
         }
+
+        input.value += selVal;
     }
 </script>
+
+<script type="text/javascript">
+    function checkYear() {
+
+        const year = document.getElementById('year').value;
+        const d = new Date();
+        const n = d.getFullYear();
+        if (year > n) {
+            alert("Max year is " + n);
+            return false;
+        }
+        return true;
+    }
+</script>
+
 <style>
     #navbar {
         margin: 0;
@@ -50,8 +64,8 @@
     }
 
     #navbar li {
-        border-left: 10px solid #666;
         border-bottom: 1px solid #666;
+        border-left: 10px solid #666;
     }
 
     #navbar a {
@@ -60,33 +74,27 @@
         padding: 5px;
         text-decoration: none;
         font-weight: bold;
+        border-left: 5px solid #33ADFF;
         display: block;
     }
 
     #sidebar {
+        position: absolute;
+        overflow: auto;
+        padding: 10px;
         width: 200px;
-        background: #ffffff;
+        background: #ECF5E4;
         border-right: 1px solid #231F20;
-        top: 0px; /* Расстояние от верхнего края */
+        top: 0; /* Расстояние от верхнего края */
         bottom: 0; /* Расстояние снизу  */
     }
 
-    body {
-        margin: 0;
-    }
-
-    #sidebar, #content {
+    #content {
         position: absolute;
-    }
-
-    #sidebar, #content {
         overflow: auto;
         padding: 10px;
-    }
-
-    #content {
         top: 0px; /* Расстояние от верхнего края */
-        left: 220px; /* Расстояние от левого края */
+        left: 250px; /* Расстояние от левого края */
         bottom: 0;
         right: 0;
     }
@@ -114,28 +122,32 @@
 
 <body>
 <div id=sidebar>
-    <ul id="navbar">
-        <li><a href="/admin/users">Пользователи</a></li>
-        <li><a href="/admin/admins">Администраторы</a></li>
-        <li><a href="/admin/films">Фильмы</a></li>
-        <li><a href="/admin/halls">Залы</a></li>
-        <li><a href="/admin/seances">Сеансы</a></li>
-        <li><a href="/">Просмотр кинотеатра</a></li>
+    <ul id="navbar"><li><a href="/admin/users">Users</a></li>
+        <li><a href="/admin/admins">Admins</a></li>
+        <li><a href="/admin/films">Films</a></li>
+        <ul>
+            <li><a href="/admin/films/genres">Genres</a></li>
+            <li><a href="/admin/films/studios">Studios</a></li>
+            <li><a href="/admin/films/countries">Countries</a></li>
+            <li><a href="/admin/films/actors">Actors</a></li>
+            <li><a href="/admin/films/directors">Directors</a></li>
+        </ul>
+        <li><a href="/admin/halls">Halls</a></li>
+        <li><a href="/admin/seances">Seances</a></li>
+        <li><a href="/">To cinema</a></li>
     </ul>
 </div>
-<div id="addLanguage">
 
-</div>
 <div id="content">
     <h3>Add new film:</h3><br>
 
-    <form action="/admin/add_film" method="post">
+    <form action="/admin/add_film" method="post" onsubmit="return checkYear()">
         <p><label for="title">Title:</label>
             <input type="text" name="title" id="title" required></p>
         <p><label for="description">Description:</label>
             <input type="text" name="description" id="description" required></p>
         <p><label for="year">Year:</label>
-            <input type="number" name="year" id="year" min="1800" max="<%=new Date().getYear()%>" required></p>
+            <input type="number" name="year" id="year" min="1800" required></p>
         <p><label for="minAge">Min age:</label>
             <input type="number" name="minAge" id="minAge" required></p>
         <p><label for="duration">Duration:</label>
@@ -153,7 +165,7 @@
                 %>
             </select></p>
         <p><label for="genres">Genres:</label>
-            <input type="text" name="genres" id="genres" required>
+            <input type="text" name="genres" id="genres" pattern="(.+\(\d+\))+" required>
             <select id="selectGenre" onchange="addValue('genres', 'selectGenre')">
                 <%
                     for (Genre genre :
@@ -166,7 +178,7 @@
                 %>
             </select></p>
         <p><label for="studios">Studios:</label>
-            <input type="text" name="studios" id="studios" required>
+            <input type="text" name="studios" id="studios" pattern="(.+\(\d+\))+">
             <select id="selectStudios" onchange="addValue('studios', 'selectStudios')">
                 <%
                     for (Studio studio :
@@ -178,8 +190,8 @@
                     }
                 %>
             </select></p>
-        <p><label for="">Countries:</label>
-            <input type="text" name="countries" id="countries" required>
+        <p><label for="countries">Countries:</label>
+            <input type="text" name="countries" id="countries" pattern="(.+\(\d+\))+">
             <select id="selectCountries" onchange="addValue('countries', 'selectCountries')">
                 <%
                     for (Country country :
@@ -191,8 +203,8 @@
                     }
                 %>
             </select></p>
-        <p><label for="">Directors:</label>
-            <input type="text" name="directors" id="directors" required>
+        <p><label for="directors">Directors:</label>
+            <input type="text" name="directors" id="directors" pattern="(.+\(\d+\))+">
             <select id="selectDirectors" onchange="addValue('directors', 'selectDirectors')">
                 <%
                     for (Director director :
@@ -204,8 +216,8 @@
                     }
                 %>
             </select></p>
-        <p><label for="">Actors:</label>
-            <input type="text" name="actors" id="actors" required>
+        <p><label for="actors">Actors:</label>
+            <input type="text" name="actors" id="actors" pattern="(.+\(\d+\))+">
             <select id="selectActors" onchange="addValue('actors', 'selectActors')">
                 <%
                     for (Actor actor :

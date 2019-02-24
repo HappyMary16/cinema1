@@ -9,6 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Language extends Entity {
     private String language;
+
+    @Override
+    public String toString() {
+        return language;
+    }
 }
 
 

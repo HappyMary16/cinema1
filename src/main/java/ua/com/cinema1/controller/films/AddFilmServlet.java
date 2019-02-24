@@ -1,7 +1,7 @@
 package ua.com.cinema1.controller.films;
 
-import ua.com.cinema1.dao.DaoFactory;
-import ua.com.cinema1.model.Film;
+import ua.com.cinema1.dao.*;
+import ua.com.cinema1.model.*;
 import ua.com.cinema1.service.FilmService;
 
 import javax.servlet.ServletException;
@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 @WebServlet(name = "AddFilmServlet", urlPatterns = {"/admin/add_film"})
 public class AddFilmServlet extends HttpServlet {
@@ -32,6 +34,52 @@ public class AddFilmServlet extends HttpServlet {
                 .getInstance()
                 .getLanguageDao()
                 .getById(Integer.valueOf(request.getParameter("language"))));
+        film.setYear(Integer.parseInt(request.getParameter("year")));
+
+        List<Genre> genres = new LinkedList<>();
+        for (String s :
+                request.getParameter("genres").split("\\D")) {
+            if (!s.isEmpty()) {
+                genres.add(Genre.getById(Integer.valueOf(s)));
+            }
+        }
+        film.setGenres(genres);
+
+        List<Studio> studios = new LinkedList<>();
+        for (String s :
+                request.getParameter("studios").split("\\D")) {
+            if (!s.isEmpty()) {
+                studios.add(StudioDao.getInstance().getById(Integer.valueOf(s)));
+            }
+        }
+        film.setStudios(studios);
+
+        List<Country> countries = new LinkedList<>();
+        for (String s :
+                request.getParameter("countries").split("\\D")) {
+            if (!s.isEmpty()) {
+                countries.add(CountryDao.getInstance().getById(Integer.valueOf(s)));
+            }
+        }
+        film.setCountries(countries);
+
+        List<Director> directors = new LinkedList<>();
+        for (String s :
+                request.getParameter("directors").split("\\D")) {
+            if (!s.isEmpty()) {
+                directors.add(DirectorDao.getInstance().getById(Integer.valueOf(s)));
+            }
+        }
+        film.setDirectors(directors);
+
+        List<Actor> actors = new LinkedList<>();
+        for (String s :
+                request.getParameter("actors").split("\\D")) {
+            if (!s.isEmpty()) {
+                actors.add(ActorDao.getInstance().getById(Integer.valueOf(s)));
+            }
+        }
+        film.setActors(actors);
 
         Date date = null;
         try {

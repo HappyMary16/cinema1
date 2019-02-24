@@ -17,49 +17,52 @@
             list-style-type: none;
             width: 200px;
         }
+
         #navbar li {
-            border-left: 10px solid #666;
             border-bottom: 1px solid #666;
+            border-left: 10px solid #666;
         }
+
         #navbar a {
             background-color: #949494;
             color: #fff;
             padding: 5px;
             text-decoration: none;
             font-weight: bold;
+            border-left: 5px solid #33ADFF;
             display: block;
         }
 
-        body { margin: 0; }
-        #sidebar { position: absolute; }
-        #sidebar { overflow: auto; padding: 10px; }
-
         #sidebar {
-            width: 200px; background: #ffffff; border-right: 1px solid #231F20;
-            top: 0px; /* Расстояние от верхнего края */
+            position: absolute;
+            overflow: auto;
+            padding: 10px;
+            width: 200px;
+            background: #ECF5E4;
+            border-right: 1px solid #231F20;
+            top: 0; /* Расстояние от верхнего края */
             bottom: 0; /* Расстояние снизу  */
-        }
-
-        label {
-            width: 200px; /* Ширина */
-            text-align: right; /* Выравниваем по правому краю */
-            float: left; /* Выстраиваем элементы рядом */
-            margin-right: 10px; /* Расстояние от текста до текстового поля */
-            line-height: 30px; /* Выравниваем по высоте */
         }
 
     </style>
 </head>
 
 <body>
-<div id = sidebar>
+<div id=sidebar>
     <ul id="navbar">
-        <li><a href="/admin/users">Пользователи</a></li>
-        <li><a href="/admin/admins">Администраторы</a></li>
-        <li><a href="/admin/films">Фильмы</a></li>
-        <li><a href="/admin/halls">Залы</a></li>
-        <li><a href="/admin/seances">Сеансы</a></li>
-        <li><a href="/">Просмотр кинотеатра</a></li>
+        <li><a href="/admin/users">Users</a></li>
+        <li><a href="/admin/admins">Admins</a></li>
+        <li><a href="/admin/films">Films</a></li>
+            <ul>
+                <li><a href="/admin/films/genres">Genres</a></li>
+                <li><a href="/admin/films/studios">Studios</a></li>
+                <li><a href="/admin/films/countries">Countries</a></li>
+                <li><a href="/admin/films/actors">Actors</a></li>
+                <li><a href="/admin/films/directors">Directors</a></li>
+            </ul>
+        <li><a href="/admin/halls">Halls</a></li>
+        <li><a href="/admin/seances">Seances</a></li>
+        <li><a href="/">To cinema</a></li>
     </ul>
 </div>
 

@@ -23,8 +23,8 @@
     }
 
     #navbar li {
-        border-left: 10px solid #666;
         border-bottom: 1px solid #666;
+        border-left: 10px solid #666;
     }
 
     #navbar a {
@@ -37,27 +37,23 @@
         display: block;
     }
 
-    body {
-        margin: 0;
-    }
-
-    #sidebar, #content {
+    #sidebar {
         position: absolute;
         overflow: auto;
         padding: 10px;
-    }
-
-    #sidebar {
         width: 200px;
         background: #ECF5E4;
         border-right: 1px solid #231F20;
-        top: 0px; /* Расстояние от верхнего края */
+        top: 0; /* Расстояние от верхнего края */
         bottom: 0; /* Расстояние снизу  */
     }
 
     #content {
+        position: absolute;
+        overflow: auto;
+        padding: 10px;
         top: 0px; /* Расстояние от верхнего края */
-        left: 220px; /* Расстояние от левого края */
+        left: 250px; /* Расстояние от левого края */
         bottom: 0;
         right: 0;
     }
@@ -67,7 +63,7 @@
         box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2); /* Тень внутри */
         border: 1px solid #ccc; /* Параметры рамки */
         color: black; /* Цвет текста */
-        padding-left: 10px; /* Расстояние от левого края */
+        padding-left: 30px; /* Расстояние от левого края */
     }
 
     label {
@@ -88,12 +84,19 @@
 
 <div id=sidebar>
     <ul id="navbar">
-        <li><a href="/admin/users">Пользователи</a></li>
-        <li><a href="/admin/admins">Администраторы</a></li>
-        <li><a href="/admin/films">Фильмы</a></li>
-        <li><a href="/admin/halls">Залы</a></li>
-        <li><a href="/admin/seances">Сеансы</a></li>
-        <li><a href="/">Просмотр кинотеатра</a></li>
+        <li><a href="/admin/users">Users</a></li>
+        <li><a href="/admin/admins">Admins</a></li>
+        <li><a href="/admin/films">Films</a></li>
+        <ul>
+            <li><a href="/admin/films/genres">Genres</a></li>
+            <li><a href="/admin/films/studios">Studios</a></li>
+            <li><a href="/admin/films/countries">Countries</a></li>
+            <li><a href="/admin/films/actors">Actors</a></li>
+            <li><a href="/admin/films/directors">Directors</a></li>
+        </ul>
+        <li><a href="/admin/halls">Halls</a></li>
+        <li><a href="/admin/seances">Seances</a></li>
+        <li><a href="/">To cinema</a></li>
     </ul>
 </div>
 
@@ -117,21 +120,27 @@
     <%
         StringBuilder genres = new StringBuilder();
         film.getGenres().forEach(e -> genres.append(e).append(", "));
-        genres.delete(genres.length() - 2, genres.length());
+        if (!genres.toString().isEmpty()) {
+            genres.delete(genres.length() - 2, genres.length());
+        }
     %>
     <p><label for="genres"> Genres: </label>
         <textarea name="genres" id="genres" readonly><%=genres.toString().toLowerCase()%> </textarea></p>
     <%
         StringBuilder studios = new StringBuilder();
         film.getStudios().forEach(e -> studios.append(e).append(", "));
-        studios.delete(studios.length() - 2, studios.length());
+        if (!studios.toString().isEmpty()) {
+            studios.delete(studios.length() - 2, studios.length());
+        }
     %>
     <p><label for="studios"> Studios: </label>
         <textarea name="studios" id="studios" readonly><%=studios.toString()%> </textarea></p>
     <%
         StringBuilder countries = new StringBuilder();
         film.getCountries().forEach(e -> countries.append(e).append(", "));
-        countries.delete(countries.length() - 2, countries.length());
+        if (!countries.toString().isEmpty()) {
+            countries.delete(countries.length() - 2, countries.length());
+        }
     %>
     <p><label for="countries"> Countries: </label>
         <textarea name="countries" id="countries" readonly><%=countries.toString()%> </textarea></p>
@@ -139,14 +148,18 @@
     <%
         StringBuilder directors = new StringBuilder();
         film.getDirectors().forEach(e -> directors.append(e).append(", "));
-        directors.delete(directors.length() - 2, directors.length());
+        if (!directors.toString().isEmpty()) {
+            directors.delete(directors.length() - 2, directors.length());
+        }
     %>
     <p><label for="directors"> Directors: </label>
         <textarea name="directors" id="directors" readonly><%=directors.toString()%> </textarea></p>
     <%
         StringBuilder actors = new StringBuilder();
         film.getActors().forEach(e -> actors.append(e).append(", "));
-        actors.delete(actors.length() - 2, actors.length());
+        if (!actors.toString().isEmpty()) {
+            actors.delete(actors.length() - 2, actors.length());
+        }
     %>
     <p><label for="actors"> Actors: </label>
         <textarea name="actors" id="actors" readonly><%=actors.toString()%> </textarea></p>
@@ -161,7 +174,7 @@
     <p><label for="trailer"> Trailer (link): </label>
         <input type="text" name="trailer" id="trailer" value="<%=film.getTrailerLink()%>" readonly></p>
 
-    <form action="/admin/seance/update?id=<%=film.getId()%>" method="post">
+    <form action="/admin/film/update?id=<%=film.getId()%>" method="post">
         <button type="submit"> Update</button>
     </form>
 </div>
