@@ -39,7 +39,7 @@ public class AdminService implements IServise<Integer, User> {
     }
 
     @Override
-    public User read(Integer key) {
+    public User getById(Integer key) {
         User admin = userDao.getById(key);
         return admin.getRole() == Role.ADMIN ? admin : null;
     }
