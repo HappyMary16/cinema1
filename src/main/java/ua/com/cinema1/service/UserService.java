@@ -39,7 +39,7 @@ public class UserService  implements IServise<Integer, User> {
     }
 
     @Override
-    public User read(Integer key) {
+    public User getById(Integer key) {
         User user = userDao.getById(key);
         return user.getRole() == Role.USER ? user : null;
     }

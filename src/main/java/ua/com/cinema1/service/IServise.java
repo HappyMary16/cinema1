@@ -7,7 +7,7 @@ public interface IServise<K, V> {
 
     K create(V value);
 
-    V read(K key);
+    V getById(K key);
 
     void update(V value);
 

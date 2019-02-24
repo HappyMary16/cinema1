@@ -12,6 +12,7 @@ public class DaoFactory {
     private IDao<Integer, Ticket> ticketDao;
     private IDao<Integer, Seance> seanceDao;
     private IDao<Integer, User> userDao;
+    private IDao<Integer, Language> languageDao;
     private IGenreDao genresDao;
     private IFilmDataDao<Country> countryDao;
     private IFilmDataDao<Director> directorDao;
@@ -42,6 +43,7 @@ public class DaoFactory {
         directorDao = new FilmDataDao<>(Director.class);
         actorDao = new FilmDataDao<>(Actor.class);
         studioDao = new FilmDataDao<>(Studio.class);
+        languageDao = LanguagesDao.getInstance();
     }
 
     public IDao<Integer, Film> getFilmDao() {
@@ -87,4 +89,9 @@ public class DaoFactory {
     public IFilmDataDao<Studio> getStudioDao() {
         return studioDao;
     }
+
+    public IDao<Integer, Language> getLanguageDao() {
+        return languageDao;
+    }
+
 }

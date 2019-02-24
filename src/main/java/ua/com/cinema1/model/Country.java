@@ -8,4 +8,9 @@ import lombok.*;
 public class Country extends Entity {
 
     private String country;
+
+    @Override
+    public String toString() {
+        return country;
+    }
 }
