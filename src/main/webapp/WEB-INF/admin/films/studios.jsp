@@ -1,19 +1,16 @@
-<%@ page import="ua.com.cinema1.dao.FilmDao" %>
-<%@ page import="ua.com.cinema1.model.Film" %>
-<%--
+<%@ page import="ua.com.cinema1.model.Studio" %>
+<%@ page import="ua.com.cinema1.dao.StudioDao" %><%--
   Created by IntelliJ IDEA.
   User: Dell
-  Date: 16.02.2019
-  Time: 12:24
+  Date: 24.02.2019
+  Time: 14:48
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-
 <head>
-    <title>Films</title>
+    <title>Studios</title>
 </head>
-
 <style>
     #navbar {
         margin: 0;
@@ -95,38 +92,25 @@
 </div>
 
 <div id="content">
-    <form action="/admin/films/new">
-        <button type="submit">New film</button>
+    <form action="/admin/films/studios/add" method="post">
+        <p><label for="studio">Studio:</label>
+            <input type="text" name="studio" id="studio" required></p>
+        <button type="submit">Add studio</button>
     </form>
     <table>
         <tr>
             <th class="title">№</th>
-            <th class="title">Title</th>
-            <th class="title">Min age</th>
-            <th class="title">Duration</th>
-            <th class="title">Language</th>
-            <th class="title">Year</th>
+            <th class="title">Studio</th>
         </tr>
         <%
             int i = 0;
-            for (Film film :
-                    FilmDao.getInstance().getAll()) {
+            for (Studio entity :
+                    StudioDao.getInstance().getAll()) {
                 i++;
         %>
         <tr>
-            <td class="text"><a href="/admin/film?id=<%= film.getId() %>"><%= i%></a>
-            </td>
-            <td class="text"><a href="/admin/film?id=<%= film.getId() %>"><%= film.getTitle()%></a>
-            </td>
-            <td class="text"><a href="/admin/film?id=<%= film.getId() %>"><%=film.getMinAge()%></a>
-            </td>
-            <td class="text"><a href="/admin/film?id=<%= film.getId() %>"><%=film.getDuration()%></a>
-            </td>
-            <td class="text"><a href="/admin/film?id=<%= film.getId() %>"><%=film.getLanguage()%></a>
-            </td>
-            <td class="text"><a href="/admin/film?id=<%= film.getId() %>"><%=film.getYear()%></a>
-            </td>
-            <td class="list"><a href="/admin/film/delete?id=<%= film.getId()%>">Delete</a></td>
+            <td class="text"><%=i%></td>
+            <td class="text"><%= entity%></td>
         </tr>
         <%
             }
