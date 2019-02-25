@@ -9,7 +9,7 @@ import java.io.IOException;
 
 @WebServlet(name = "AdminServlet", urlPatterns = {"/admin/admins", "/admin/users", "/admin/films", "/admin/seances",
         "/admin", "/admin/films/genres", "/admin/films/studios", "/admin/films/countries", "/admin/films/directors",
-        "/admin/films/actors", "/admin/films/languages"})
+        "/admin/films/actors", "/admin/films/languages", "/admin/halls"})
 public class AdminServlet  extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,6 +28,9 @@ public class AdminServlet  extends HttpServlet {
                 break;
             case "/admin/seances":
                 request.getRequestDispatcher("/WEB-INF/admin/seances/seances.jsp").forward(request, response);
+                break;
+            case "/admin/halls":
+                request.getRequestDispatcher("/WEB-INF/admin/halls/halls.jsp").forward(request, response);
                 break;
             case "/admin/films":
                 request.getRequestDispatcher("/WEB-INF/admin/films/films.jsp").forward(request, response);
