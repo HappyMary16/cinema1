@@ -20,12 +20,13 @@ public class Film extends Entity {
     private List<Studio> studios;
     private List<Country> countries;
     private Integer duration;
-    private String language;
+    private Language language;
     private Date firstSeance;
     private Date lastSeance;
     private File smallPoster;
     private File bigPoster;
     private String trailerLink;
+    private int year;
 
 }
 

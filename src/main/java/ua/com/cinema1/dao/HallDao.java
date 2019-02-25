@@ -118,7 +118,7 @@ public class HallDao extends Dao<Hall> {
                 preparedStatement.setInt(1, hallId);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    places[resultSet.getInt("column")][resultSet.getInt("row")] = true;
+                    places[resultSet.getInt("column_num")][resultSet.getInt("row_num")] = true;
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

@@ -8,7 +8,6 @@ public interface IDao<K, T extends Entity> {
 
     List<T> getAll();
 
-
     /**
      * Return element's value with given the key
      *
@@ -38,6 +37,10 @@ public interface IDao<K, T extends Entity> {
      * @param entity the value of element
      */
     int insert(T entity);
+
+    default List<T> getAllByValue(String column, String value) {
+        return null;
+    }
 
 
 }

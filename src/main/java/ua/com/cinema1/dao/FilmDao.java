@@ -10,8 +10,8 @@ import java.util.List;
 
 public class FilmDao extends Dao<Film>{
 
-    private final String INSERT = "INSERT INTO film (title, description, min_age, duration, film_language, first_seance, last_seance, small_poster, big_poster, trailer_link) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE = "UPDATE film SET title = ?, description = ?, min_age = ?, duration = ?, film_language = ?, first_seance = ?, last_seance = ?, small_poster = ?, big_poster = ?, trailer_link = ? WHERE id = ?";
+    private final String INSERT = "INSERT INTO film (title, description, min_age, duration, film_language, first_seance, last_seance, small_poster, big_poster, trailer_link, year) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE = "UPDATE film SET title = ?, description = ?, min_age = ?, duration = ?, film_language = ?, first_seance = ?, last_seance = ?, small_poster = ?, big_poster = ?, trailer_link = ?, year = ? WHERE id = ?";
 
     private static FilmDao filmDao;
     private static DaoFactory daoFactory = DaoFactory.getInstance();
@@ -35,12 +35,13 @@ public class FilmDao extends Dao<Film>{
         preparedStatement.setString(2, entity.getDescribe());
         preparedStatement.setInt(3, entity.getMinAge());
         preparedStatement.setLong(4, entity.getDuration());
-        preparedStatement.setString(5, entity.getLanguage());
+        preparedStatement.setInt(5, entity.getLanguage().getId());
         preparedStatement.setDate(6, new Date(entity.getFirstSeance().getTime()));
         preparedStatement.setDate(7, new Date(entity.getLastSeance().getTime()));
         preparedStatement.setString(8, entity.getSmallPoster().toString());
         preparedStatement.setString(9, entity.getBigPoster().toString());
         preparedStatement.setString(10, entity.getTrailerLink());
+        preparedStatement.setInt(11, entity.getYear());
 
         return preparedStatement;
     }
@@ -56,12 +57,6 @@ public class FilmDao extends Dao<Film>{
                 entity.setId(resultSet.getInt(1));
             }
 
-            daoFactory.getGenresDao().insertGenresByFilmId(entity);
-            daoFactory.getActorDao().insertDataByFilmId(entity.getActors(), entity.getId(), ActorDao.getInstance());
-            daoFactory.getCountryDao().insertDataByFilmId(entity.getCountries(), entity.getId(), CountryDao.getInstance());
-            daoFactory.getDirectorDao().insertDataByFilmId(entity.getDirectors(), entity.getId(), DirectorDao.getInstance());
-            daoFactory.getStudioDao().insertDataByFilmId(entity.getStudios(), entity.getId(), StudioDao.getInstance());
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -76,19 +71,14 @@ public class FilmDao extends Dao<Film>{
         preparedStatement.setString(2, entity.getDescribe());
         preparedStatement.setInt(3, entity.getMinAge());
         preparedStatement.setLong(4, entity.getDuration());
-        preparedStatement.setString(5, entity.getLanguage());
+        preparedStatement.setInt(5, entity.getLanguage().getId());
         preparedStatement.setDate(6, new Date(entity.getFirstSeance().getTime()));
         preparedStatement.setDate(7, new Date(entity.getLastSeance().getTime()));
         preparedStatement.setString(8, entity.getSmallPoster().toString());
         preparedStatement.setString(9, entity.getBigPoster().toString());
         preparedStatement.setString(10, entity.getTrailerLink());
-        preparedStatement.setInt(11, entity.getId());
-
-        daoFactory.getGenresDao().updateGenresByFilmId(entity);
-        daoFactory.getStudioDao().updateAllByFilmId(entity.getId(), entity.getStudios(), StudioDao.getInstance());
-        daoFactory.getDirectorDao().updateAllByFilmId(entity.getId(), entity.getDirectors(), DirectorDao.getInstance());
-        daoFactory.getActorDao().updateAllByFilmId(entity.getId(), entity.getActors(), ActorDao.getInstance());
-        daoFactory.getCountryDao().updateAllByFilmId(entity.getId(), entity.getCountries(), CountryDao.getInstance());
+        preparedStatement.setInt(11, entity.getYear());
+        preparedStatement.setInt(12, entity.getId());
 
         return preparedStatement;
     }
@@ -105,25 +95,14 @@ public class FilmDao extends Dao<Film>{
             film.setDescribe(resultSet.getString("description"));
             film.setMinAge(resultSet.getInt("min_age"));
             film.setDuration(resultSet.getInt("duration"));
-            film.setLanguage(resultSet.getString("film_language"));
+            film.setLanguage(daoFactory.getLanguageDao().getById(resultSet.getInt("film_language")));
             film.setFirstSeance(resultSet.getDate("first_seance"));
             film.setLastSeance(resultSet.getDate("last_seance"));
             film.setBigPoster(new File(resultSet.getString("big_poster")));
             film.setSmallPoster(new File(resultSet.getString("small_poster")));
             film.setTrailerLink(resultSet.getString("trailer_link"));
-            film.setGenres(daoFactory.getGenresDao().getGenresByFilmId(film.getId()));
-            film.setCountries(daoFactory
-                    .getCountryDao()
-                    .getAllByFilmId(film.getId(), CountryDao.getInstance()));
-            film.setStudios(daoFactory
-                    .getStudioDao()
-                    .getAllByFilmId(film.getId(), StudioDao.getInstance()));
-            film.setActors(daoFactory
-                    .getActorDao()
-                    .getAllByFilmId(film.getId(), ActorDao.getInstance()));
-            film.setDirectors(daoFactory
-                    .getDirectorDao()
-                    .getAllByFilmId(film.getId(), DirectorDao.getInstance()));
+            film.setYear(resultSet.getInt("year"));
+
             result.add(film);
         }
         return result;

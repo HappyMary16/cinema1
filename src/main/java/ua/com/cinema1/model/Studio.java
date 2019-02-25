@@ -8,4 +8,9 @@ import lombok.*;
 public class Studio extends Entity {
 
     private String studio;
+
+    @Override
+    public String toString() {
+        return studio;
+    }
 }

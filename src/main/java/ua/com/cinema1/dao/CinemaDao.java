@@ -10,10 +10,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CinemaDao extends Dao<Cinema>{
-    private final String INSERT = "INSERT INTO cinema (name, describe, address, coordinate_x, coordinate_y) VALUES (?, ?, ?, ?, ?)";
-    private final String UPDATE = "UPDATE cinema SET name = ?, describe = ?, address = ?, coordinate_x = ?, coordinate_y = ?";
-    private final String INSERT_DATA = "INSERT INTO %s (%s) VALUES (?)";
-    private final String UPDATE_DATA = "UPDATE %s SET %s = ? WHERE id = ?";
+    private static final String INSERT = "INSERT INTO cinema (name, describe, address, coordinate_x, coordinate_y) VALUES (?, ?, ?, ?, ?)";
+    private static final String UPDATE = "UPDATE cinema SET name = ?, describe = ?, address = ?, coordinate_x = ?, coordinate_y = ?";
+    private static final String INSERT_DATA = "INSERT INTO %s (%s) VALUES (?)";
+    private static final String UPDATE_DATA = "UPDATE %s SET %s = ? WHERE id = ?";
     private static CinemaDao cinemaDao;
 
     private CinemaDao(Class<Cinema> type) {

@@ -1,8 +1,11 @@
 package ua.com.cinema1.dao;
 
+import ua.com.cinema1.datasource.DataSource;
 import ua.com.cinema1.model.Seance;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +14,7 @@ public class SeanceDao extends Dao<Seance> {
 
     private final String INSERT = "INSERT INTO seance (film_id, seance_date, seance_time, hall_id, price) VALUES (?, ?, ?, ?, ?)";
     private final String UPDATE = "UPDATE seance SET film_id = ?, seance_date = ?, seance_time = ?, hall_id = ?, price = ? WHERE id = ?";
-
+    private final String GET_ALL_BY = "SELECT * FROM seance WHERE %s = %s";
     private static SeanceDao seanceDao;
 
     private SeanceDao(Class<Seance> type) {
@@ -65,9 +68,15 @@ public class SeanceDao extends Dao<Seance> {
         while (resultSet.next()) {
             Seance entity = new Seance();
             entity.setId(resultSet.getInt("id"));
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-DD");
 
-            Date date = new Date(String.valueOf(resultSet
-                    .getDate("seance_date")));
+            Date date = null;
+            try {
+                date = dateFormat.parse(resultSet
+                        .getDate("seance_date").toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             date.setTime(resultSet.getLong("seance_time"));
             entity.setDateAdnTime(date);
 
@@ -75,6 +84,21 @@ public class SeanceDao extends Dao<Seance> {
             entity.setHall(HallDao.getInstance().getById(resultSet.getInt("hall_id")));
             entity.setPriceTicket(resultSet.getInt("price"));
             result.add(entity);
+        }
+        return result;
+    }
+
+    @Override
+    public List<Seance> getAllByValue(String column, String value) {
+        String sql = String.format(GET_ALL_BY, column, value);
+
+        List<Seance> result = null;
+        try (Connection connection = DataSource.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            result = readAll(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return result;
     }
