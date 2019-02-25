@@ -41,4 +41,8 @@ public class SeanceService implements IServise<Integer, Seance> {
     public void delete(Integer key) {
         dao.delete(key);
     }
+
+    public List<Seance> getAllBy(String column, String value) {
+        return dao.getAllByValue(column, value);
+    }
 }
