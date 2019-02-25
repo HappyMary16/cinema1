@@ -33,8 +33,8 @@
         }
 
         #navbar li {
-            border-left: 10px solid #666;
             border-bottom: 1px solid #666;
+            border-left: 10px solid #666;
         }
 
         #navbar a {
@@ -47,35 +47,28 @@
             display: block;
         }
 
-        body {
-            margin: 0;
-        }
-
-        #sidebar, #content {
+        #sidebar {
             position: absolute;
-        }
-
-        #sidebar, #content {
             overflow: auto;
             padding: 10px;
-        }
-
-        #sidebar {
             width: 200px;
             background: #ECF5E4;
             border-right: 1px solid #231F20;
-            top: 0px; /* Расстояние от верхнего края */
+            top: 0; /* Расстояние от верхнего края */
             bottom: 0; /* Расстояние снизу  */
         }
 
         #content {
+            position: absolute;
+            overflow: auto;
+            padding: 10px;
             top: 0px; /* Расстояние от верхнего края */
-            left: 220px; /* Расстояние от левого края */
+            left: 250px; /* Расстояние от левого края */
             bottom: 0;
             right: 0;
         }
 
-        #firstNameField, #lastNameField, #loginField, #passwordField, #confirmPasswordField, #phoneField, #idField {
+        #firstNameField, #lastNameField, #loginField, #passwordField, #confirmPasswordField, #phoneField {
             width: 300px; /* Ширина поля */
             padding: 10px; /* Поля */
             box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2); /* Тень внутри */
@@ -98,12 +91,19 @@
 <body>
 <div id=sidebar>
     <ul id="navbar">
-        <li><a href="/admin/users">Пользователи</a></li>
-        <li><a href="/admin/admins">Администраторы</a></li>
-        <li><a href="/admin/films">Фильмы</a></li>
-        <li><a href="/admin/halls">Залы</a></li>
-        <li><a href="/admin/seances">Сеансы</a></li>
-        <li><a href="/">Просмотр кинотеатра</a></li>
+        <li><a href="/admin/users">Users</a></li>
+        <li><a href="/admin/admins">Admins</a></li>
+        <li><a href="/admin/films">Films</a></li>
+        <ul>
+            <li><a href="/admin/films/genres">Genres</a></li>
+            <li><a href="/admin/films/studios">Studios</a></li>
+            <li><a href="/admin/films/countries">Countries</a></li>
+            <li><a href="/admin/films/actors">Actors</a></li>
+            <li><a href="/admin/films/directors">Directors</a></li>
+        </ul>
+        <li><a href="/admin/halls">Halls</a></li>
+        <li><a href="/admin/seances">Seances</a></li>
+        <li><a href="/">To cinema</a></li>
     </ul>
 </div>
 <div id="content">
