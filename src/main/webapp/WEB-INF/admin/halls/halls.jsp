@@ -96,7 +96,7 @@
         <li><a href="/">To cinema</a></li>
     </ul>
 </div>
-
+<div id="content">
     <form action="/admin/halls/new">
         <button type="submit">New hall</button>
     </form>
