@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "HallCardServlet", urlPatterns = {"/admin/halls/new", "/admin/hall/delete", "/admin/hall", "/admin/hall/update"})
+@WebServlet(name = "HallCardServlet", urlPatterns = {"/admin/halls/new", "/admin/hall/delete", "/admin/hall", "/admin/hall/update", "/admin/add_hall_placement"})
 public class HallCardServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -29,6 +29,10 @@ public class HallCardServlet extends HttpServlet {
             case "/admin/hall/delete":
                 FilmDao.getInstance().delete(Integer.valueOf(request.getParameter("id")));
                 request.getRequestDispatcher("/WEB-INF/admin/halls/halls.jsp").forward(request, response);
+                break;
+            case "/admin/add_hall_placement":
+                request.getRequestDispatcher("/WEB-INF/admin/halls/add_placement.jsp").forward(request, response);
+                break;
         }
     }
 

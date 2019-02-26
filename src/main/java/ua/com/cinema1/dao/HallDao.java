@@ -77,7 +77,7 @@ public class HallDao extends Dao<Hall> {
             entity.setName(resultSet.getString("hall_name"));
             entity.setHeight(resultSet.getInt("height"));
             entity.setWidth(resultSet.getInt("width"));
-            entity.setPlacement(new boolean[entity.getWidth()][entity.getHeight()]);
+            entity.setPlacement(new boolean[entity.getHeight()][entity.getWidth()]);
             PlacementDao.getInstance().getAll(entity.getPlacement(), entity.getId());
 
             List<Place> places = new LinkedList<>();
@@ -97,9 +97,9 @@ public class HallDao extends Dao<Hall> {
 
     private static class PlacementDao implements IPlacementDao {
 
-        private static final String SELECT_ALL_BY_HALL_ID = "SELECT * FROM placement WHERE id = ?";
-        private static final String INSERT_ALL_BY_HALL_ID = "INSERT INTO placement (id, row_num, column_num) VALUES (?, ?, ?)";
-        public static final String DELETE_ALL_BY_HALL_ID = "DELETE FROM placement WHERE id = ?";
+        private static final String SELECT_ALL_BY_HALL_ID = "SELECT * FROM placement WHERE hall_id = ?";
+        private static final String INSERT_ALL_BY_HALL_ID = "INSERT INTO placement (hall_id, row_num, column_num) VALUES (?, ?, ?)";
+        public static final String DELETE_ALL_BY_HALL_ID = "DELETE FROM placement WHERE hall_id = ?";
 
         private static PlacementDao placementDao = new PlacementDao();
 
@@ -118,7 +118,8 @@ public class HallDao extends Dao<Hall> {
                 preparedStatement.setInt(1, hallId);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    places[resultSet.getInt("column_num")][resultSet.getInt("row_num")] = true;
+                    System.out.println(resultSet.getInt("row_num") + "  " + resultSet.getInt("column_num"));
+                    places[resultSet.getInt("row_num")][resultSet.getInt("column_num")] = true;
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
