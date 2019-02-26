@@ -1,6 +1,6 @@
 package ua.com.cinema1.controller.halls;
 
-import ua.com.cinema1.dao.FilmDao;
+import ua.com.cinema1.dao.HallDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,7 +27,7 @@ public class HallCardServlet extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/admin/halls/hall_card.jsp").forward(request, response);
                 break;
             case "/admin/hall/delete":
-                FilmDao.getInstance().delete(Integer.valueOf(request.getParameter("id")));
+                HallDao.getInstance().delete(Integer.valueOf(request.getParameter("id")));
                 request.getRequestDispatcher("/WEB-INF/admin/halls/halls.jsp").forward(request, response);
                 break;
             case "/admin/add_hall_placement":

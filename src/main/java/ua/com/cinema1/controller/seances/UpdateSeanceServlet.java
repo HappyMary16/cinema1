@@ -1,6 +1,7 @@
 package ua.com.cinema1.controller.seances;
 
 import ua.com.cinema1.dao.FilmDao;
+import ua.com.cinema1.dao.HallDao;
 import ua.com.cinema1.dao.SeanceDao;
 import ua.com.cinema1.model.Seance;
 
