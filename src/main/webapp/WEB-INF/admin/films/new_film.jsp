@@ -1,15 +1,6 @@
-<%@ page import="ua.com.cinema1.dao.LanguagesDao" %>
-<%@ page import="ua.com.cinema1.model.Genre" %>
-<%@ page import="ua.com.cinema1.model.Language" %>
-<%@ page import="ua.com.cinema1.model.Country" %>
-<%@ page import="ua.com.cinema1.model.Studio" %>
-<%@ page import="ua.com.cinema1.model.Actor" %>
-<%@ page import="ua.com.cinema1.model.Director" %>
-<%@ page import="ua.com.cinema1.dao.StudioDao" %>
-<%@ page import="ua.com.cinema1.dao.CountryDao" %>
-<%@ page import="ua.com.cinema1.dao.DirectorDao" %>
-<%@ page import="ua.com.cinema1.dao.ActorDao" %>
-<%@ page import="ua.com.cinema1.model.Studio" %>
+<%@ page import="ua.com.cinema1.dao.*" %>
+<%@ page import="ua.com.cinema1.model.*" %>
+<%@ page import="java.util.Date" %>
 <%--
   Created by IntelliJ IDEA.
   User: Dell
@@ -22,6 +13,33 @@
 <head>
     <title>Add new film</title>
 </head>
+
+<script type="text/javascript">
+    function checkDates() {
+
+        const from = new Date(document.getElementById('firstSeance').value).valueOf();
+        const fromVal = document.getElementById('firstSeance').value;
+        const to = new Date(document.getElementById('lastSeance').value).valueOf();
+        const toVal = document.getElementById('lastSeance').value;
+        const now  = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).valueOf();
+
+        if (today > from) {
+            alert("Date " + fromVal + " is old ");
+            return false;
+        }
+        if (today > to) {
+            alert("Date " + toVal + " is old ");
+            return false;
+        }
+        if (from > to) {
+            alert("Date " + fromVal + " is > then " + toVal);
+            return false;
+        }
+
+        return true;
+    }
+</script>
 
 <script type="text/javascript">
     function addValue(inp, sel) {
@@ -141,13 +159,13 @@
 <div id="content">
     <h3>Add new film:</h3><br>
 
-    <form action="/admin/add_film" method="post" onsubmit="return checkYear()">
+    <form action="/admin/add_film" method="post" onsubmit="return checkDates()">
         <p><label for="title">Title:</label>
             <input type="text" name="title" id="title" required></p>
         <p><label for="description">Description:</label>
             <input type="text" name="description" id="description" required></p>
         <p><label for="year">Year:</label>
-            <input type="number" name="year" id="year" min="1800" required></p>
+            <input type="number" name="year" id="year" min="1800" max="<%=new Date().getYear() + 1900%>" required></p>
         <p><label for="minAge">Min age:</label>
             <input type="number" name="minAge" id="minAge" required></p>
         <p><label for="duration">Duration:</label>
