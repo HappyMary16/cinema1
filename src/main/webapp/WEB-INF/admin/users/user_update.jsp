@@ -112,9 +112,6 @@
             UserDao userService = UserDao.getInstance();
             User userDTO = userService.getById(Integer.parseInt(request.getParameter("id")));
         %>
-        <p><label for="id">ID:</label><input type="text" name="id" id="id" value="<%=userDTO.getId()%>"
-                                                  readonly>
-        </p>
         <p><label for="firstNameField">Имя:</label><input type="text" name="firstName" id="firstNameField"
                                                           value="<%=userDTO.getFirstName()%>" required></p>
         <p><label for="lastNameField">Фамилия:</label><input type="text" name="lastName" id="lastNameField"
