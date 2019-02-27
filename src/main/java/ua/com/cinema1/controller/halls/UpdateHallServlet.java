@@ -11,26 +11,29 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "AddHallServlet", urlPatterns = {"/admin/add_hall"})
-public class AddHallServlet extends HttpServlet {
+@WebServlet(name = "UpdateHallServlet", urlPatterns = {"/admin/update_hall"})
+public class UpdateHallServlet extends HttpServlet {
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HallDao hallDao = (HallDao) DaoFactory.getInstance().getHallDao();
-        Hall hall = new Hall();
+        Hall hall = hallDao.getById(Integer.valueOf(request.getParameter("id")));
         hall.setName(request.getParameter("name"));
         hall.setHeight(Integer.valueOf(request.getParameter("height")));
         hall.setWidth(Integer.valueOf(request.getParameter("width")));
 
         boolean[][] placement = new boolean[hall.getHeight()][hall.getWidth()];
-        for (int i = 0; i < hall.getHeight(); i++) {
-            for (int j = 0; j < hall.getWidth(); j++) {
-                placement[i][j] = request.getParameter(i + "a" + j).equals("1");
+        int h = hall.getHeight() > hall.getPlacement().length ? hall.getPlacement().length : hall.getHeight();
+        int w = hall.getWidth() > hall.getPlacement()[0].length ? hall.getPlacement()[0].length : hall.getWidth();
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+                placement[i][j] = hall.getPlacement()[i][j];
             }
         }
 
         hall.setPlacement(placement);
 
-        response.sendRedirect("/admin/hall?id=" + hallDao.insert(hall));
+        hallDao.update(hall);
+        request.getRequestDispatcher("/WEB-INF/admin/halls/hall_update.jsp").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

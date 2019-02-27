@@ -14,19 +14,6 @@
     <title>Администратор</title>
 </head>
 
-<script type="text/javascript">
-    function checkButton(i, j) {
-        const button = document.getElementById(i + " " + j);
-        if (button.value === "0") {
-            button.style.color = "black";
-            button.style.backgroundColor = "black";
-        } else {
-            button.style.color = "#33ADFF";
-            button.style.backgroundColor = "#33ADFF";
-        }
-    }
-</script>
-
 <style>
     #navbar {
         margin: 0;

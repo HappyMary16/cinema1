@@ -11,7 +11,7 @@ import java.util.List;
 public class HallDao extends Dao<Hall> {
 
     private final String INSERT = "INSERT INTO hall (hall_name, width, height) VALUES (?, ?, ?)";
-    private final String UPDATE = "UPDATE hall SET hall_name = ?, width = ?, height = ?, placement_id = ? WHERE id = ?";
+    private final String UPDATE = "UPDATE hall SET hall_name = ?, width = ?, height = ? WHERE id = ?";
 
     private static HallDao hallDao;
 
@@ -61,8 +61,7 @@ public class HallDao extends Dao<Hall> {
         preparedStatement.setString(1, entity.getName());
         preparedStatement.setInt(2, entity.getWidth());
         preparedStatement.setInt(3, entity.getHeight());
-        preparedStatement.setInt(4, 1); //placement ????
-        preparedStatement.setInt(5, entity.getId());
+        preparedStatement.setInt(4, entity.getId());
         PlacementDao.getInstance().updateAll(entity.getPlacement(), entity.getId());
         return preparedStatement;
     }

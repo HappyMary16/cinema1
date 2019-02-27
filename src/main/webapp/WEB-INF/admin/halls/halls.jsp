@@ -97,6 +97,8 @@
     </ul>
 </div>
 <div id="content">
+    <h3>Halls:</h3>
+
     <form action="/admin/halls/new">
         <button type="submit">New hall</button>
     </form>
