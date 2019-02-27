@@ -16,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @WebServlet(name = "UpdateFilmServlet", urlPatterns = {"/admin/film_update"})
 public class UpdateFilmServlet extends HttpServlet {
@@ -35,50 +37,43 @@ public class UpdateFilmServlet extends HttpServlet {
                 .getById(Integer.valueOf(request.getParameter("language"))));
         film.setYear(Integer.parseInt(request.getParameter("year")));
 
+        Pattern p = Pattern.compile("\\((?<num>\\d+)\\)");
+
         List<Genre> genres = new LinkedList<>();
-        for (String s :
-                request.getParameter("genres").split("\\D")) {
-            if (!s.isEmpty()) {
-                genres.add(Genre.getById(Integer.valueOf(s)));
-            }
+        Matcher m = p.matcher(request.getParameter("genres"));
+        while (m.find()) {
+            genres.add(Genre.getById(Integer.valueOf(m.group("num"))));
         }
         film.setGenres(genres);
 
         List<Studio> studios = new LinkedList<>();
-        for (String s :
-                request.getParameter("studios").split("\\D")) {
-            if (!s.isEmpty()) {
-                studios.add(StudioDao.getInstance().getById(Integer.valueOf(s)));
-            }
+        m = p.matcher(request.getParameter("studios"));
+        while (m.find()) {
+            studios.add(StudioDao.getInstance().getById(Integer.valueOf(m.group("num"))));
         }
         film.setStudios(studios);
 
         List<Country> countries = new LinkedList<>();
-        for (String s :
-                request.getParameter("countries").split("\\D")) {
-            if (!s.isEmpty()) {
-                countries.add(CountryDao.getInstance().getById(Integer.valueOf(s)));
-            }
+        m = p.matcher(request.getParameter("countries"));
+        while (m.find()) {
+            countries.add(CountryDao.getInstance().getById(Integer.valueOf(m.group("num"))));
         }
         film.setCountries(countries);
 
         List<Director> directors = new LinkedList<>();
-        for (String s :
-                request.getParameter("directors").split("\\D")) {
-            if (!s.isEmpty()) {
-                directors.add(DirectorDao.getInstance().getById(Integer.valueOf(s)));
-            }
+        m = p.matcher(request.getParameter("directors"));
+        while (m.find()) {
+            directors.add(DirectorDao.getInstance().getById(Integer.valueOf(m.group("num"))));
         }
         film.setDirectors(directors);
 
         List<Actor> actors = new LinkedList<>();
-        for (String s :
-                request.getParameter("actors").split("\\D")) {
-            if (!s.isEmpty()) {
-                actors.add(ActorDao.getInstance().getById(Integer.valueOf(s)));
-            }
+        m = p.matcher(request.getParameter("actors"));
+        while (m.find()) {
+            actors.add(ActorDao.getInstance().getById(Integer.valueOf(m.group("num"))));
         }
         film.setActors(actors);
+
         Date date = null;
         try {
             date = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("firstSeance"));
