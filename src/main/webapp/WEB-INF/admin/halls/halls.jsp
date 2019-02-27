@@ -11,7 +11,7 @@
 <html>
 
 <head>
-    <title>Halls</title>
+    <title>Administration</title>
 </head>
 
 <style>

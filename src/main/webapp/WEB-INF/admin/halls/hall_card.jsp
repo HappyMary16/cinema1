@@ -11,7 +11,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Администратор</title>
+    <title>Administration</title>
 </head>
 
 <style>

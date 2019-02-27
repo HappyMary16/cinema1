@@ -15,6 +15,7 @@
     function changeButton(i, j) {
         const button = document.getElementById(i + " " + j);
         const hid = document.getElementById(i + "a" + j);
+
         if (hid.value === "1") {
             button.style.color = "black";
             button.style.backgroundColor = "black";

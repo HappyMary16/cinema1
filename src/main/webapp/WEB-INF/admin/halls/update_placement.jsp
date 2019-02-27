@@ -18,7 +18,6 @@
 
             const button = document.getElementById(i + " " + j);
             const hid = document.getElementById(i + "a" + j);
-            console.log(hid.value);
             if (hid.value === "0") {
                 button.style.color = "black";
                 button.style.backgroundColor = "black";
