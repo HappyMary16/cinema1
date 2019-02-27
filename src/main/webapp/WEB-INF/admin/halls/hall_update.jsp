@@ -1,6 +1,5 @@
 <%@ page import="ua.com.cinema1.dao.HallDao" %>
-<%@ page import="ua.com.cinema1.model.Hall" %>
-<%--
+<%@ page import="ua.com.cinema1.model.Hall" %><%--
   Created by IntelliJ IDEA.
   User: Dell
   Date: 16.02.2019
@@ -9,12 +8,12 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-
 <head>
     <title>Administration</title>
 </head>
 
 <style>
+
     #navbar {
         margin: 0;
         padding: 0;
@@ -58,27 +57,28 @@
         right: 0;
     }
 
-    table {
-        left: 250px;
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
+    input {
+        width: 300px; /* Ширина поля */
+        box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2); /* Тень внутри */
+        border: 1px solid #ccc; /* Параметры рамки */
+        color: black; /* Цвет текста */
+        padding-left: 10px; /* Расстояние от левого края */
     }
 
-    td, th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
+    label {
+        width: 200px; /* Ширина */
+        text-align: right; /* Выравниваем по правому краю */
+        float: left; /* Выстраиваем элементы рядом */
+        margin-right: 10px; /* Расстояние от текста до текстового поля */
+        line-height: 30px; /* Выравниваем по высоте */
     }
 
-    tr:nth-child(even) {
-        background-color: #dddddd;
+    .submitField {
+        margin-left: 425px; /* Сдвигаем вправо под поля */
     }
-
 </style>
 
-
 <body>
-
 <div id=sidebar>
     <ul id="navbar">
         <li><a href="/admin/users">Users</a></li>
@@ -96,42 +96,27 @@
         <li><a href="/">To cinema</a></li>
     </ul>
 </div>
+
 <div id="content">
-    <h3>Halls:</h3>
+    <h3>Update hall:</h3>
 
-    <form action="/admin/halls/new">
-        <button type="submit">New hall</button>
+    <%
+        Hall hall = HallDao.getInstance().getById(Integer.valueOf(request.getParameter("id")));
+    %>
+    <form action="/admin/update_hall?id=<%=hall.getId()%>" method="post">
+        <p><label for="name">Name:</label>
+            <input type="text" name="name" id="name" value="<%=hall.getName()%>" required></p>
+        <p><label for="width">Width:</label>
+            <input type="number" name="width" id="width" value="<%=hall.getWidth()%>" required></p>
+        <p><label for="height">Height:</label>
+            <input type="number" name="height" id="height" value="<%=hall.getHeight()%>" required></p>
+
+        <p><input type="submit" value="Save" class="submitField"></p>
     </form>
-    <table>
-        <tr>
-            <th class="title">№</th>
-            <th class="title">Name</th>
-            <th class="title">Places number</th>
-        </tr>
-        <%
-            int i = 0;
-            for (Hall hall :
-                    HallDao.getInstance().getAll()) {
-                i++;
-        %>
-        <tr>
-            <td class="text"><a href="/admin/hall?id=<%= hall.getId() %>"><%= i%>
-            </a>
-            </td>
-            <td class="text"><a href="/admin/hall?id=<%= hall.getId() %>"><%= hall.getName()%>
-            </a>
-            </td>
-            <td class="text"><a href="/admin/hall?id=<%= hall.getId() %>"><%=hall.getPlaces().size()%>
-            </a>
-            </td>
 
-            <td class="list"><a href="/admin/hall/delete?id=<%= hall.getId()%>">Delete</a></td>
-        </tr>
-        <%
-            }
-        %>
-    </table>
+    <form action="/admin/redact_placement?id=<%=hall.getId()%>" method="post">
+        <p><input type="submit" value="Redact placement" class="submitField"></p>
+    </form>
 </div>
-
 </body>
 </html>

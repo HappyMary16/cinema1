@@ -11,7 +11,7 @@ import java.util.List;
 public class HallDao extends Dao<Hall> {
 
     private final String INSERT = "INSERT INTO hall (hall_name, width, height) VALUES (?, ?, ?)";
-    private final String UPDATE = "UPDATE hall SET hall_name = ?, width = ?, height = ?, placement_id = ? WHERE id = ?";
+    private final String UPDATE = "UPDATE hall SET hall_name = ?, width = ?, height = ? WHERE id = ?";
 
     private static HallDao hallDao;
 
@@ -61,8 +61,7 @@ public class HallDao extends Dao<Hall> {
         preparedStatement.setString(1, entity.getName());
         preparedStatement.setInt(2, entity.getWidth());
         preparedStatement.setInt(3, entity.getHeight());
-        preparedStatement.setInt(4, 1); //placement ????
-        preparedStatement.setInt(5, entity.getId());
+        preparedStatement.setInt(4, entity.getId());
         PlacementDao.getInstance().updateAll(entity.getPlacement(), entity.getId());
         return preparedStatement;
     }
@@ -77,7 +76,7 @@ public class HallDao extends Dao<Hall> {
             entity.setName(resultSet.getString("hall_name"));
             entity.setHeight(resultSet.getInt("height"));
             entity.setWidth(resultSet.getInt("width"));
-            entity.setPlacement(new boolean[entity.getWidth()][entity.getHeight()]);
+            entity.setPlacement(new boolean[entity.getHeight()][entity.getWidth()]);
             PlacementDao.getInstance().getAll(entity.getPlacement(), entity.getId());
 
             List<Place> places = new LinkedList<>();
@@ -97,9 +96,9 @@ public class HallDao extends Dao<Hall> {
 
     private static class PlacementDao implements IPlacementDao {
 
-        private static final String SELECT_ALL_BY_HALL_ID = "SELECT * FROM placement WHERE id = ?";
-        private static final String INSERT_ALL_BY_HALL_ID = "INSERT INTO placement (id, row_num, column_num) VALUES (?, ?, ?)";
-        public static final String DELETE_ALL_BY_HALL_ID = "DELETE FROM placement WHERE id = ?";
+        private static final String SELECT_ALL_BY_HALL_ID = "SELECT * FROM placement WHERE hall_id = ?";
+        private static final String INSERT_ALL_BY_HALL_ID = "INSERT INTO placement (hall_id, row_num, column_num) VALUES (?, ?, ?)";
+        public static final String DELETE_ALL_BY_HALL_ID = "DELETE FROM placement WHERE hall_id = ?";
 
         private static PlacementDao placementDao = new PlacementDao();
 
@@ -118,7 +117,8 @@ public class HallDao extends Dao<Hall> {
                 preparedStatement.setInt(1, hallId);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    places[resultSet.getInt("column_num")][resultSet.getInt("row_num")] = true;
+                    System.out.println(resultSet.getInt("row_num") + "  " + resultSet.getInt("column_num"));
+                    places[resultSet.getInt("row_num")][resultSet.getInt("column_num")] = true;
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
