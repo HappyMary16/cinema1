@@ -19,9 +19,8 @@ import java.util.Date;
 
 @WebServlet(name = "AddSeanceServlet", urlPatterns = {"/admin/add_seance"})
 public class AddSeanceServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        System.out.println("asdfghjkl");
         SeanceService seanceService = SeanceService.getInstance();
         request.setCharacterEncoding("UTF-8");
 
@@ -35,11 +34,10 @@ public class AddSeanceServlet extends HttpServlet {
             dateFrom.setTime(new SimpleDateFormat("HH:mm")
                     .parse(request.getParameter("time"))
                     .getTime() + dateFrom.getTime() + 2L * 60 * 60 * 1000);
-            System.out.println(dateFrom);
             dateTo = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("to"));
             dateTo.setTime(new SimpleDateFormat("HH:mm")
                     .parse(request.getParameter("time"))
-                    .getTime() + dateFrom.getTime() + 2L * 60 * 60 * 1000);
+                    .getTime() + dateTo.getTime() + 2L * 60 * 60 * 1000);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -50,18 +48,19 @@ public class AddSeanceServlet extends HttpServlet {
             seance.setHall(hall);
             seance.setDateAdnTime(date);
             seance.setPriceTicket(price);
-
             boolean check = true;
 
+            long dateEnd = date.getTime() + (film.getDuration() + 10) * 60 * 1000;
             for (Seance s :
                     seanceService.getAllBy("hall_id", String.valueOf(seance.getHall().getId()))) {
-                if (!(date.getTime() > s.getDateAdnTime().getTime() + (s.getFilm().getDuration() + 10) * 60 * 1000
-                        || date.getTime() + (film.getDuration() + 10) * 60 * 1000 < s.getDateAdnTime().getTime())) {
+                long sFilmEnd = s.getDateAdnTime().getTime() + (s.getFilm().getDuration() + 10) * 60 * 1000;
+                if ((date.getTime() > s.getDateAdnTime().getTime() && date.getTime() < sFilmEnd)
+                        || (dateEnd > s.getDateAdnTime().getTime() && dateEnd < sFilmEnd)) {
                     check = false;
                 }
             }
 
-            if (check && date.after(dateFrom) && (date.before(dateTo) || date.equals(dateTo))) {
+            if (check) {
                 seanceService.create(seance);
             }
         }
