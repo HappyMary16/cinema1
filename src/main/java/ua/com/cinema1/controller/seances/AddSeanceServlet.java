@@ -42,6 +42,11 @@ public class AddSeanceServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+        if (dateTo.after(film.getLastSeance())) {
+            dateTo = film.getLastSeance();
+            dateTo.setTime(dateTo.getTime() + film.getDuration() * 60 * 1000);
+        }
+
         for (Date date = dateFrom; date.before(dateTo) || date.equals(dateTo); date.setTime(date.getTime() + 24L * 60 * 60 * 1000)) {
             Seance seance = new Seance();
             seance.setFilm(film);
