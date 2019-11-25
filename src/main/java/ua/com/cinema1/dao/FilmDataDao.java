@@ -14,7 +14,6 @@ public class FilmDataDao<T extends Entity> implements IFilmDataDao<T> {
     private String type;
     private DataSource dataSource;
 
-
     public static final String GET_ALL_BY_ID = "SELECT * FROM film_%s WHERE film_id = ?";
     public static final String DELETE_ALL_BY_ID = "DELETE FROM film_%s WHERE film_id = ?";
     public static final String INSERT_ALL_BY_ID = "INSERT INTO film_%s (film_id, %s_id) VALUES (?, ?)";
